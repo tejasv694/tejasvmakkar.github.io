@@ -202,7 +202,7 @@
     }
     .hero-headline {
       font-family: var(--mono);
-      font-size: clamp(36px, 6vw, 72px);
+      font-size: 72px;
       font-weight: 700;
       line-height: 1.1;
       letter-spacing: -0.02em;
@@ -331,7 +331,7 @@
     #problem { background: #ede7da; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .problem-headline {
       font-family: var(--mono);
-      font-size: clamp(26px, 4vw, 44px);
+      font-size: 44px;
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 60px;
@@ -385,7 +385,7 @@
     ══════════════════════════════════════════════════════════ */
     #why-me .section-headline {
       font-family: var(--mono);
-      font-size: clamp(24px, 3.5vw, 40px);
+      font-size: 40px;
       font-weight: 700;
       line-height: 1.25;
       margin-bottom: 16px;
@@ -442,7 +442,7 @@
     #projects { border-top: 1px solid var(--border); }
     .proj-headline {
       font-family: var(--mono);
-      font-size: clamp(24px, 3.5vw, 40px);
+      font-size: 40px;
       font-weight: 700;
       margin-bottom: 48px;
     }
@@ -556,7 +556,7 @@
     #process { background: #ede7da; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .process-headline {
       font-family: var(--mono);
-      font-size: clamp(24px, 3.5vw, 40px);
+      font-size: 40px;
       font-weight: 700;
       margin-bottom: 72px;
     }
@@ -625,7 +625,7 @@
     ══════════════════════════════════════════════════════════ */
     #faq .faq-headline {
       font-family: var(--mono);
-      font-size: clamp(24px, 3.5vw, 40px);
+      font-size: 40px;
       font-weight: 700;
       margin-bottom: 48px;
     }
@@ -705,7 +705,7 @@
     }
     .cta-headline {
       font-family: var(--mono);
-      font-size: clamp(28px, 4.5vw, 56px);
+      font-size: 56px;
       font-weight: 700;
       line-height: 1.2;
       margin-bottom: 20px;
@@ -956,7 +956,7 @@
     .cs-hero-badge { margin-bottom: 16px; }
     .cs-title {
       font-family: var(--mono);
-      font-size: clamp(22px, 3.5vw, 32px);
+      font-size: 32px;
       font-weight: 700;
       line-height: 1.2;
       color: #111;
@@ -1482,9 +1482,19 @@
       #hero { padding-top: 100px; min-height: auto; padding-bottom: 60px; }
       .hero-inner { padding: 0 20px; }
       .terminal-card { display: none; }
+      .hero-headline { font-size: clamp(32px, 8vw, 58px); }
       .hero-sub { font-size: 16px; }
       .hero-body { font-size: 14px; }
       .hero-proof { font-size: 10px; }
+
+      /* Section headlines */
+      .problem-headline { font-size: clamp(24px, 6vw, 36px); }
+      #why-me .section-headline { font-size: clamp(22px, 5.5vw, 34px); }
+      .proj-headline { font-size: clamp(22px, 5.5vw, 34px); }
+      .process-headline { font-size: clamp(22px, 5.5vw, 34px); }
+      #faq .faq-headline { font-size: clamp(22px, 5.5vw, 34px); }
+      .cta-headline { font-size: clamp(26px, 7vw, 44px); }
+      .cs-title { font-size: clamp(20px, 5vw, 28px); }
 
       /* Sections */
       .section { padding: 64px 20px; }
@@ -1527,30 +1537,26 @@
       .label { font-size: 10px; }
 
       /* Problem */
-      .problem-headline { font-size: clamp(22px, 6vw, 32px); margin-bottom: 40px; }
+      .problem-headline { margin-bottom: 40px; }
       .p-num { font-size: 36px; }
 
       /* Why Me */
-      #why-me .section-headline { font-size: clamp(20px, 5.5vw, 32px); }
       .why-body { font-size: 15px; margin-bottom: 36px; }
 
       /* Projects */
-      .proj-headline { font-size: clamp(20px, 5.5vw, 32px); margin-bottom: 32px; }
       .proj-title { font-size: 17px; }
       .proj-desc { font-size: 13px; }
 
       /* Process */
-      .process-headline { font-size: clamp(20px, 5.5vw, 32px); margin-bottom: 48px; }
       .step-title { font-size: 15px; }
       .step-body { font-size: 14px; }
 
       /* FAQ */
-      #faq .faq-headline { font-size: clamp(20px, 5.5vw, 32px); margin-bottom: 32px; }
+      .faq-headline { margin-bottom: 32px; }
       .faq-q-text { font-size: 14px; }
       .faq-a-inner { font-size: 14px; }
 
       /* CTA */
-      .cta-headline { font-size: clamp(24px, 7vw, 40px); }
       .cta-body { font-size: 15px; }
 
       /* Footer */
@@ -2592,14 +2598,28 @@
 
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
+      // Update URL hash so this page is shareable/linkable
+      history.replaceState(null, '', '#' + id);
     }
     function closeCS() {
       overlay.classList.remove('open');
       document.body.style.overflow = '';
+      // Remove hash without scrolling
+      history.replaceState(null, '', window.location.pathname + window.location.search);
     }
     csClose.addEventListener('click', closeCS);
     backdrop.addEventListener('click', closeCS);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCS(); });
+
+    // Auto-open case study if URL contains a project hash
+    (function() {
+      var validIds = ['askthesheets','lead-qualifier','social-pipeline','classpulse','notion-crm','email-lifecycle','api-docs'];
+      var hash = window.location.hash.replace('#', '');
+      if (hash && validIds.indexOf(hash) !== -1) {
+        // Small delay so the page renders before modal opens
+        setTimeout(function() { openCS(hash); }, 400);
+      }
+    })();
 
     // ── COMING SOON template ───────────────────────────────────
     function comingSoon(name, badge, desc, stats) {
